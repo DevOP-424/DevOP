@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<div class="grid-container">
+
+  <div class="header">
+    <h3>Search
+      <input type="text" placeholder="....">
+    </h3>
+  </div>
+  <div class="left" ">
+    <button class="accordion">Taskboard</button>
+    <div class="panel">
+      <p>My Taskboard</p>
+    </div>
+    <button class="accordion">Team</button>
+    <div class="panel">
+      <p>DevOP</p>
+    </div>
+    <button class="accordion">Chats</button>
+    <div class="panel">
+      <p>James Setliff</p>
+      <p>Courtney Hill</p>
+      <p>Christopher Lebovitz</p>
+      <p>Kacheef Whites</p>
+    </div>
+  </div>
+  <div class="middle">
+    <div class = "column"><input type="text" placeholder="...."><br></div>
+    <div class = "column"><input type="text" placeholder="...."></div>
+    <div class = "column"><input type="text" placeholder="...."></div>
+  </div>  
+  
+  </div>  
+</div>
+
+
+<script>
+  let acc = document.getElementsByClassName("accordion");
+  let i;
+  
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      let panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+  </script>
+
+</body>
+</html>
