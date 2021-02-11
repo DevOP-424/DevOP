@@ -34,31 +34,15 @@
     </div>
   </div>
   <div class="middle">
-    <div class = "column"><input type="text" placeholder="...."><br></div>
-    <div class = "column"><input type="text" placeholder="...."></div>
-    <div class = "column"><input type="text" placeholder="...."></div>
+    <ul id="messages"></ul>
+    <form id="chatForm">
+      <input id="txt" autocomplete="off" autofocus="on" placeholder="Enter message..." /><button id = "button">Send</button>
+    </form>
   </div>  
   
   </div>  
 </div>
-
-
-<script>
-  let acc = document.getElementsByClassName("accordion");
-  let i;
-  
-  for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      let panel = this.nextElementSibling;
-      if (panel.style.maxHeight) {
-        panel.style.maxHeight = null;
-      } else {
-        panel.style.maxHeight = panel.scrollHeight + "px";
-      } 
-    });
-  }
-  </script>
-
+<script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
+<script src = 'client.js'></script>
 </body>
 </html>
