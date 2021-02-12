@@ -1,13 +1,13 @@
 var socket = io.connect('localhost:3000');
 
-const button = document.querySelector("#button");
-const message = document.querySelector("#txt");
+const chat_form = document.querySelector("#chatForm");
+const message = document.getElementById("txt");
 
 // submit text message without reload/refresh the page
-button.addEventListener("click", () => {
-  preventDefault();
-  socket.emit('chat_message', message.textContent);
-  message.textContent = '';
+chat_form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  socket.emit('chat_message', message.value);
+  message.value = '';
 });
 
 // // submit text message without reload/refresh the page
@@ -19,15 +19,16 @@ button.addEventListener("click", () => {
 // });
 
 // append the chat text message
-socket.on('chat_message', function(msg){
-    console.log(msg);
-    document.querySelector("#messages").innerHTML = `<li>${msg}</li>`;
+socket.on('chat_message', (msg) => {
+    let old = document.querySelector("#messages").innerHTML;
+    old += `<li>${msg}</li>`;
+    document.querySelector("#messages").innerHTML = old;
 });
 
 // append text if someone is online
-socket.on('is_online', function(username) {
-    $('#messages').append($('<li>').html(username));
-});
+// socket.on('is_online', (username) => {
+//     $('#messages').append($('<li>').html(username));
+// });
 
 // ask username
 let username = 'chris';

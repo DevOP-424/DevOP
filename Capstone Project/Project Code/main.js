@@ -1,25 +1,25 @@
-const { app, BrowserWindow } = require('electron')
+// const { app, BrowserWindow } = require('electron')
 
-function createWindow () {
-  const win = new BrowserWindow({show: false});
-  win.maximize();
-  win.show();
-  win.loadFile('index.html')
-}
+// function createWindow () {
+//   const win = new BrowserWindow({show: false});
+//   win.maximize();
+//   win.show();
+//   win.loadFile('index.html')
+// }
 
-app.whenReady().then(createWindow)
+// app.whenReady().then(createWindow)
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+// app.on('window-all-closed', () => {
+//   if (process.platform !== 'darwin') {
+//     app.quit()
+//   }
+// })
 
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
+// app.on('activate', () => {
+//   if (BrowserWindow.getAllWindows().length === 0) {
+//     createWindow()
+//   }
+// })
 
 const express = require('express');
 const exp = express();
@@ -50,7 +50,7 @@ connection.connect((err) => {
 //     res.render('index.html');
 // });
 
-exp.use(express.static(path.join(__dirname, 'Project Code')));
+exp.use(express.static('client'));
 
 io.sockets.on('connection', (socket) => {
     console.log('does this work? 1')
