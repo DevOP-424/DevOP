@@ -27,10 +27,7 @@
     </div>
     <button class="accordion">Chats</button>
     <div class="panel">
-      <p>James Setliff</p>
-      <p>Courtney Hill</p>
-      <p>Christopher Lebovitz</p>
-      <p>Kacheef Whites</p>
+      <ul id=people></ul>
     </div>
   </div>
   <div class="main-content">
@@ -42,7 +39,7 @@
     </div>
     <div class="chat-container">
       <ul id="messages"></ul>
-        <form id="chatForm">
+            <form id="chatForm">
           <input id="txt" type="text" autocomplete="off" autofocus="on" placeholder="Enter message..." /><button id = "button">Send</button>
         </form>
     </div>
@@ -50,7 +47,7 @@
   
   </div>  
 </div>
-<script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.min.js"></script>
 <script src='client.js'></script>
 </body>
 </html>

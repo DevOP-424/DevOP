@@ -47,15 +47,25 @@
   padding: 0; 
   height: 100%;
   width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
-#messages li {
+.msg-other {
   padding: 5px 10px;
-  background: limegreen;
+  background: white;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-#messages li:nth-child(odd) {
-  background: grey; 
+.msg-self {
+  padding: 5px 10px;
+  background: gainsboro;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: right;
 }
   
 /* Style the header */
@@ -87,7 +97,7 @@
   grid-row-gap: 10px;
   grid-template-areas: 
     'header header header header header header header header header header' 
-    'left main-content main-content main-content main-content main-content main-content main-content main-content main-content ';
+    'left main-content main-content main-content main-content main-content main-content main-content main-content main-content';
   grid-column-gap: 10px; 
   height: auto;
   
@@ -162,7 +172,7 @@
   margin-left: 5px;
 }
 
-.active::after {
+.active:after {
   content: "\2212";
 }
 

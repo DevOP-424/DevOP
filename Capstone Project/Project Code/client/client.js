@@ -1,46 +1,76 @@
-var socket = io.connect('localhost:3000');
+const socket = io.connect('http://localhost:3000');
 
 const chat_form = document.querySelector("#chatForm");
 const message = document.getElementById("txt");
 
+// Pull in environment variables
+let username = 'James Setliff';
+let users = [];
+
 // submit text message without reload/refresh the page
-chat_form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  socket.emit('chat_message', message.value);
+chat_form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let time = Date.now()
+  let chat_json = {
+    username: username,
+    timestamp: time,
+    msg: message.value,
+    room_num: 1
+  };
+  socket.emit('chat_message', chat_json);
   message.value = '';
 });
 
-// // submit text message without reload/refresh the page
-// $('form').submit(function(e){
-//     e.preventDefault(); // prevents page reloading
-//     socket.emit('chat_message', $('#txt').val());
-//     $('#txt').val('');
-//     return false;
-// });
-
-// append the chat text message
+// use append() to add messages to chat history
 socket.on('chat_message', (msg) => {
-    let old = document.querySelector("#messages").innerHTML;
-    old += `<li>${msg}</li>`;
-    document.querySelector("#messages").innerHTML = old;
+  console.log(msg);
+  // if message from self
+  if (msg.username === username) {
+    let newLi = document.createElement('li');
+    newLi.classList.add('msg-self');
+    newLi.textContent = msg.msg + " :" + msg.username;
+    document.querySelector('#messages').append(newLi);
+  } else {
+    // otherwise message is from someone else
+    let newLi = document.createElement('li');
+    newLi.classList.add('msg-other');
+    newLi.textContent = msg.username + ": " + msg.msg;
+    document.querySelector('#messages').append(newLi);
+  }
+
+  // scroll chat window when msg recevied
+  document.querySelector('#messages').scrollTo({
+    top: document.querySelector('#messages').scrollHeight
+  });
 });
 
-// append text if someone is online
-// socket.on('is_online', (username) => {
-//     $('#messages').append($('<li>').html(username));
-// });
+// send username at startup
+socket.emit('connection', username);
 
-// ask username
-let username = 'chris';
+// capture username on connect
+socket.on('is_online', (user) => {
+  users.push(user);
+  // create DOM elements for users
+  users.forEach((user) => {
+    console.log(user);
+    let newUser = document.createElement('li');
+    newUser.classList.add('people-li');
+    newUser.textContent = user;
+    document.querySelector('#people').append(newUser);
+  });
+});
+
+// TODO: Replace this with stuff from settings page
 socket.emit('username', username);
 
-let acc = document.getElementsByClassName("accordion");
-let i;
+// Accordion animation on navbar
+let acc = document.getElementsByClassName('accordion');
+console.log(acc);
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    let panel = this.nextElementSibling;
+for (let i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", () => {
+    acc[i].classList.toggle("active");
+    let panel = acc[i].nextElementSibling;
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
     } else {

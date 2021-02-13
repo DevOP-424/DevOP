@@ -1,25 +1,25 @@
-// const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron')
 
-// function createWindow () {
-//   const win = new BrowserWindow({show: false});
-//   win.maximize();
-//   win.show();
-//   win.loadFile('index.html')
-// }
+function createWindow () {
+  const win = new BrowserWindow({show: false});
+  win.maximize();
+  win.show();
+  win.loadFile('client/index.html')
+}
 
-// app.whenReady().then(createWindow)
+app.whenReady().then(createWindow)
 
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit()
-//   }
-// })
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
 
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow()
-//   }
-// })
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow()
+  }
+})
 
 const express = require('express');
 const exp = express();
@@ -29,11 +29,11 @@ const mysql = require('mysql');
 const path = require('path');
 
 var connection = mysql.createConnection({
-    host     : '68.114.104.121', // enter IP of DB here
-    port     : '30000', // specify port
-    user     : 'clebo', // DB username
-    password : 'SMTTT424', // DB password
-    database : 'sys' // target schema
+    host     : '68.114.104.121',    // enter IP of DB here
+    port     : '30000',             // specify port
+    user     : 'clebo',             // DB username
+    password : 'SMTTT424',          // DB password
+    database : 'sys'                // target schema
 });
 
 // connect to db
@@ -51,24 +51,23 @@ connection.connect((err) => {
 // });
 
 exp.use(express.static('client'));
+exp.use(express.json());
 
 io.sockets.on('connection', (socket) => {
-    console.log('does this work? 1')
     socket.on('username', (username) => {
-        socket.username = username;
+        console.log(username);
+        io.emit('is_online', username);
         pullChatHistory(socket);
     });
 
-    socket.on('disconnect', (username) => {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    })
-    console.log('does this work?2')
-    socket.on('chat_message', (message) => {
-        console.log('does this work?3')
-        pushChatMessage(socket.username, message);
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-    });
+    // socket.on('disconnect', () => {
+    //     io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+    // });
 
+    socket.on('chat_message', (message) => {
+        pushChatMessage(message);
+        io.emit('chat_message', message);
+    });
 });
 
 const server = http.listen(3000, () => {
@@ -86,36 +85,29 @@ function pullChatHistory(socket) {
             console.error('Error with query: ' + err.stack);
             return;
         } else {
-            console.log(res);
             res.forEach((row) => {
-                socket.emit('chat_message', `<strong>${row.username}: </strong>${row.msg}`);
+                socket.emit('chat_message', row);
             });
-            io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+            // io.emit('is_online', socket.username);
             
             return;
         }
     });
 }
 
-function pushChatMessage(username, message) {
+function pushChatMessage(message) {
     // prepare query
-    const name = username;
-    const time = Date.now();
-    const msg = message;
-    const room_num = 1;
     let sql = `INSERT INTO chat SET
-                username = ${mysql.escape(name)},
-                timestamp = ${mysql.escape(time)},
-                msg = ${mysql.escape(msg)},
-                room_num = ${mysql.escape(room_num)}`;
+                username = ${mysql.escape(message.username)},
+                timestamp = ${mysql.escape(message.timestamp)},
+                msg = ${mysql.escape(message.msg)},
+                room_num = ${mysql.escape(message.room_num)}`;
 
     // run query
     connection.query(sql, (err, res) => {
         if (err) {
             console.error('Error with query: ' + err.stack);
             return;
-        } else {
-            console.log("Result: " + res);
         }
     });    
 }
