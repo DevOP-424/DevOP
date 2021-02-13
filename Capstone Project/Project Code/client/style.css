@@ -1,13 +1,14 @@
+
 *:focus {
   outline: none;
 }
 
 .chat-container {
-  background: purple;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
+  width: 100%;
+  border-left: black;
 }
 
 .chat-container > form {
@@ -17,7 +18,6 @@
   height: 5%;
   flex-direction: unset;
   border: none;
-
 }
 
 .chat-container > form input {
@@ -74,7 +74,7 @@
   background-color: white;
   padding: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 5px;
+  
   border-style: solid;
   border-width: 2px;
   background-color: whitesmoke;
@@ -83,7 +83,7 @@
 }
 .header input[type=text] {
   background-color: white;
-  border-radius: 5px;
+
   border: none;
   outline: none;
   font-size: 17px;
@@ -111,7 +111,7 @@
 /* Style the left column */
 .left {
   grid-area: left;
-  border-radius: 5px;
+  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-style: solid;
   border-width: 2px;
@@ -121,7 +121,7 @@
 /* Style the main-content class */
 .main-content {
   grid-area: main-content;
-  border-radius: 5px;
+  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-style: solid;
   border-width: 2px;
@@ -132,6 +132,7 @@
   height: 88vh;
   max-height: 88vh;
   position: relative;
+  z-index: 1;
 }
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
@@ -188,12 +189,13 @@
 .column-container {
   display: flex;
   float: left;
-  background-color: red;
-  width: 100%
+  border-right-color: black;
+  width: 100%;
+  border-right:black;
 }
 
 .column {
-  border-radius: 5px;
+  
   border:solid;
   width: 250px;
   height: 80vh;
@@ -207,7 +209,7 @@
 
 .column input[type=text]{
   border-style: none;
-  border-radius: 5px;
+  
   font-size: 15px;
   font-weight: bold;
   float: left;
