@@ -1,12 +1,16 @@
 // Required packages
 const express = require('express');
-const http = require('http').Server(exp);
-const io = require('socket.io')(http);
-const mysql = require('mysql');
 
 // Set express and configure middleware
 const exp = express();
 exp.use(express.json());
+
+// Create http server, depedent on express server
+const http = require('http').Server(exp);
+
+// Create socket, dependent on http server
+const io = require('socket.io')(http);
+const mysql = require('mysql');
 
 // Configure DB connection pool
 const pool = mysql.createPool({
