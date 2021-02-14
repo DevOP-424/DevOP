@@ -1,13 +1,20 @@
+body{
+  min-width: 98vw;
+  max-width: 98vw;
+  min-height: 98vh;
+  max-height: 98vh;
+  overflow: hidden;
+}
 *:focus {
   outline: none;
 }
 
 .chat-container {
-  background: purple;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
+  width: 100%;
+  border-left: black;
 }
 
 .chat-container > form {
@@ -17,7 +24,6 @@
   height: 5%;
   flex-direction: unset;
   border: none;
-
 }
 
 .chat-container > form input {
@@ -74,7 +80,7 @@
   background-color: white;
   padding: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 5px;
+  
   border-style: solid;
   border-width: 2px;
   background-color: whitesmoke;
@@ -83,13 +89,15 @@
 }
 .header input[type=text] {
   background-color: white;
-  border-radius: 5px;
+
   border: none;
   outline: none;
   font-size: 17px;
   width: 90vw;
   
 }
+
+
 
 /* The grid container */
 .grid-container {
@@ -100,7 +108,7 @@
     'left main-content main-content main-content main-content main-content main-content main-content main-content main-content';
   grid-column-gap: 10px; 
   height: auto;
-  
+
 } 
 
 .left {
@@ -111,27 +119,31 @@
 /* Style the left column */
 .left {
   grid-area: left;
-  border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-style: solid;
   border-width: 2px;
   background-color: whitesmoke;
+  min-width: 12vw;
+  max-width: 12vw;
   }
 
 /* Style the main-content class */
 .main-content {
   grid-area: main-content;
-  border-radius: 5px;
+  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-style: solid;
   border-width: 2px;
   background-color: whitesmoke;
   text-align: left;
   display: flex;
-  justify-content: center;
+  
   height: 88vh;
   max-height: 88vh;
+  max-width: 86vw;
+  min-width: 86vw;
   position: relative;
+  z-index: 1;
 }
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
@@ -187,30 +199,34 @@
 
 .column-container {
   display: flex;
-  float: left;
-  background-color: red;
-  width: 100%
+  border-right-color: black;
+  width: 100%;
+  border-right:black;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  
+  
 }
 
 .column {
-  border-radius: 5px;
   border:solid;
   width: 250px;
+  min-width: 250px;
   height: 80vh;
   padding: 1%;
   margin: 1%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: whitesmoke;
   float: left;
-  
 }
 
 .column input[type=text]{
   border-style: none;
-  border-radius: 5px;
   font-size: 15px;
   font-weight: bold;
   float: left;
+  text-align: center;
+  align-self: center;
   outline: none;
   background-color: whitesmoke;
 }
