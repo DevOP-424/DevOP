@@ -26,7 +26,6 @@ const exp = express();
 const http = require('http').Server(exp);
 const io = require('socket.io')(http);
 const mysql = require('mysql');
-const path = require('path');
 
 const pool = mysql.createPool({
     host     : '68.114.104.121',    // enter IP of DB here
@@ -43,59 +42,59 @@ const pool = mysql.createPool({
 exp.use(express.static('client'));
 exp.use(express.json());
 
-io.sockets.on('connection', (socket) => {
-    socket.on('username', (username) => {
-        io.emit('is_online', username);
-        pullChatHistory(socket);
-    });
+// io.sockets.on('connection', (socket) => {
+//     socket.on('username', (username) => {
+//         io.emit('is_online', username);
+//         pullChatHistory(socket);
+//     });
 
-    // socket.on('disconnect', () => {
-    //     io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    // });
+//     // socket.on('disconnect', () => {
+//     //     io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+//     // });
 
-    socket.on('chat_message', (message) => {
-        pushChatMessage(message);
-        io.emit('chat_message', message);
-    });
-});
+//     socket.on('chat_message', (message) => {
+//         pushChatMessage(message);
+//         io.emit('chat_message', message);
+//     });
+// });
 
 const server = http.listen(3000, () => {
     console.log('listening on *:3000');
 });
 
 
-function pullChatHistory(socket) {
-    // prepare query
-    const sql = "SELECT * FROM chat ORDER BY timestamp";
+// function pullChatHistory(socket) {
+//     // prepare query
+//     const sql = "SELECT * FROM chat ORDER BY timestamp";
 
-    // run query
-    pool.query(sql, (err, res) => {
-        if (err) {
-            console.error('Error with query: ' + err.stack);
-            return;
-        } else {
-            res.forEach((row) => {
-                socket.emit('chat_message', row);
-            });
-            // io.emit('is_online', socket.username);
+//     // run query
+//     pool.query(sql, (err, res) => {
+//         if (err) {
+//             console.error('Error with query: ' + err.stack);
+//             return;
+//         } else {
+//             res.forEach((row) => {
+//                 socket.emit('chat_message', row);
+//             });
+//             // io.emit('is_online', socket.username);
             
-            return;
-        }
-    });
-}
+//             return;
+//         }
+//     });
+// }
 
-function pushChatMessage(message) {
-    // prepare query
-    let sql = `INSERT INTO chat SET
-                username = ${mysql.escape(message.username)},
-                timestamp = ${mysql.escape(message.timestamp)},
-                msg = ${mysql.escape(message.msg)},
-                room_num = ${mysql.escape(message.room_num)}`;
+// function pushChatMessage(message) {
+//     // prepare query
+//     let sql = `INSERT INTO chat SET
+//                 username = ${mysql.escape(message.username)},
+//                 timestamp = ${mysql.escape(message.timestamp)},
+//                 msg = ${mysql.escape(message.msg)},
+//                 room_num = ${mysql.escape(message.room_num)}`;
 
-    // run query
-    pool.query(sql, (err) => {
-        if (err) {
-            console.error('Error with query: ' + err.stack);
-        }
-    });    
-}
+//     // run query
+//     pool.query(sql, (err) => {
+//         if (err) {
+//             console.error('Error with query: ' + err.stack);
+//         }
+//     });    
+// }

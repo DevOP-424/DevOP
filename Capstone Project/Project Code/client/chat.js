@@ -1,6 +1,4 @@
-
-
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('http://68.114.104.121:22446');
 
 const chat_form = document.querySelector("#chatForm");
 const message = document.getElementById("txt");
