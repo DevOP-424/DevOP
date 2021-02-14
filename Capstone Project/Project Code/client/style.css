@@ -1,4 +1,10 @@
-
+body{
+  min-width: 98vw;
+  max-width: 98vw;
+  min-height: 98vh;
+  max-height: 98vh;
+  overflow: hidden;
+}
 *:focus {
   outline: none;
 }
@@ -91,6 +97,8 @@
   
 }
 
+
+
 /* The grid container */
 .grid-container {
   display: grid;
@@ -100,7 +108,7 @@
     'left main-content main-content main-content main-content main-content main-content main-content main-content main-content';
   grid-column-gap: 10px; 
   height: auto;
-  
+
 } 
 
 .left {
@@ -111,11 +119,12 @@
 /* Style the left column */
 .left {
   grid-area: left;
-  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-style: solid;
   border-width: 2px;
   background-color: whitesmoke;
+  min-width: 12vw;
+  max-width: 12vw;
   }
 
 /* Style the main-content class */
@@ -128,9 +137,11 @@
   background-color: whitesmoke;
   text-align: left;
   display: flex;
-  justify-content: center;
+  
   height: 88vh;
   max-height: 88vh;
+  max-width: 86vw;
+  min-width: 86vw;
   position: relative;
   z-index: 1;
 }
@@ -188,31 +199,34 @@
 
 .column-container {
   display: flex;
-  float: left;
   border-right-color: black;
   width: 100%;
   border-right:black;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  
+  
 }
 
 .column {
-  
   border:solid;
   width: 250px;
+  min-width: 250px;
   height: 80vh;
   padding: 1%;
   margin: 1%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: whitesmoke;
   float: left;
-  
 }
 
 .column input[type=text]{
   border-style: none;
-  
   font-size: 15px;
   font-weight: bold;
   float: left;
+  text-align: center;
+  align-self: center;
   outline: none;
   background-color: whitesmoke;
 }
