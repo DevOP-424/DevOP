@@ -28,22 +28,12 @@ const io = require('socket.io')(http);
 const mysql = require('mysql');
 const path = require('path');
 
-var connection = mysql.createConnection({
+const pool = mysql.createPool({
     host     : '68.114.104.121',    // enter IP of DB here
     port     : '30000',             // specify port
     user     : 'clebo',             // DB username
     password : 'SMTTT424',          // DB password
     database : 'sys'                // target schema
-});
-
-// connect to db
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting: ' + err.stack);
-        return;
-    } else {
-        console.log('Connected as id ' + connection.threadId);
-    }
 });
 
 // exp.get('/', (req, res) => {
@@ -55,7 +45,6 @@ exp.use(express.json());
 
 io.sockets.on('connection', (socket) => {
     socket.on('username', (username) => {
-        console.log(username);
         io.emit('is_online', username);
         pullChatHistory(socket);
     });
@@ -80,7 +69,7 @@ function pullChatHistory(socket) {
     const sql = "SELECT * FROM chat ORDER BY timestamp";
 
     // run query
-    connection.query(sql, (err, res) => {
+    pool.query(sql, (err, res) => {
         if (err) {
             console.error('Error with query: ' + err.stack);
             return;
@@ -104,10 +93,9 @@ function pushChatMessage(message) {
                 room_num = ${mysql.escape(message.room_num)}`;
 
     // run query
-    connection.query(sql, (err, res) => {
+    pool.query(sql, (err) => {
         if (err) {
             console.error('Error with query: ' + err.stack);
-            return;
         }
     });    
 }
