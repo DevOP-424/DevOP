@@ -4,7 +4,7 @@ const chat_form = document.querySelector("#chatForm");
 const message = document.getElementById("txt");
 
 // Pull in environment variables
-let username = 'James Setliff';
+let username = 'James';
 let users = [];
 
 // submit text message without reload/refresh the page

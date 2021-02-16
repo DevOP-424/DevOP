@@ -16,7 +16,7 @@ const mysql = require('mysql');
 const pool = mysql.createPool({
     host     : '68.114.104.121',    // enter IP of DB here
     port     : '30000',             // specify port
-    user     : 'server',             // DB username
+    user     : 'server',            // DB username
     password : 'SMTTT424',          // DB password
     database : 'sys'                // target schema
 });
