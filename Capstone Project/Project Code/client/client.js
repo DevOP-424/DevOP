@@ -1,5 +1,3 @@
-
-
 // Accordion animation on navbar
 let acc = document.getElementsByClassName('accordion');
 console.log(acc);

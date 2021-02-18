@@ -1,12 +1,10 @@
-
-
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('http://68.114.104.121:22446');
 
 const chat_form = document.querySelector("#chatForm");
 const message = document.getElementById("txt");
 
 // Pull in environment variables
-let username = 'James Setliff';
+let username = 'James';
 let users = [];
 
 // submit text message without reload/refresh the page
