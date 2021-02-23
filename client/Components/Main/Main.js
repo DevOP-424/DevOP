@@ -50,9 +50,9 @@ class Main extends React.Component{
           <div className="main-content">
             <Switch>
             <Route path="/board" Component={ Board }><Board /></Route>
-            <Route path = "/chat" Component = {Chat}><Chat /></Route>
+            <Route path = "/chat" Component={Chat}><Chat /></Route>
             <Route path = "/team" Component={Teams}><Teams /></Route>
-            <Route path = "/settings" Component = {Settings}><Settings /></Route>
+            <Route path = "/settings" Component={Settings}><Settings /></Route>
             </Switch>
           </div>  
         </div> 

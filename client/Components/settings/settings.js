@@ -5,7 +5,7 @@ export default class Settings extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          userName: "",
+          userName: "TESTMAN",
           password: "",
           dbWeb: "",
           dbPort: ""

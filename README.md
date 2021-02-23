@@ -2,6 +2,8 @@ prior to development install the follwoing packages
 
 npm install --save-dev react-router-dom @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader style-loader sass-loader sass webpack webpack-cli electron-reloader
 
+npm i electron express mysql socket.io
+
 to begin development and see your code realtime do the following:
     first run in one terminal: npm run watch
     then launch the application in a new Terminal using: npm start
