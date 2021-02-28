@@ -1,0 +1,10 @@
+.taskcard{
+    border:solid;
+    width: 200px;
+    min-width: 200px;
+    height: 20vh;
+    padding: 1%;
+    margin: 1%;
+    float: center;
+    border-radius: 5px;
+}

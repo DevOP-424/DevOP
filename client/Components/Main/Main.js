@@ -3,6 +3,7 @@ import Board from "../board/board";
 import Chat from "../chat/chat";
 import Settings from '../settings/settings';
 import Teams from '../teamView/team';
+
 import { NavLink, Switch, Route } from 'react-router-dom';
 import './main.css';
 
@@ -33,6 +34,8 @@ class Main extends React.Component{
   render(){
     return(
         <>
+        {/*icon library*/}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div class="grid-container">
           <div class="header">
             <h3>Search<input type="text" placeholder="...."></input></h3>
