@@ -18,3 +18,4 @@ in said js file make a new class for the component using the folwoing syntax.
     }
 
 you then have to import the file in the "Parent" (board is imported into main) and call the class in the parent code.
+Done
