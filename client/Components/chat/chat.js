@@ -4,8 +4,8 @@ import "./chat.css";
 
 export default class Chat extends React.Component {
   componentDidMount() {
-    const socket = io.connect("http://68.114.104.121:22446");
-    console.log(socket);
+    this.socket = io.connect("http://68.114.104.121:22446");
+    const username = "james";
 
     const message = document.querySelector("#txt");
     document.querySelector("#chatForm").addEventListener("submit", (e) => {
@@ -17,18 +17,12 @@ export default class Chat extends React.Component {
         msg: message.value,
         room_num: 1,
       };
-      socket.emit("chat_message", chat_json);
+      this.socket.emit("chat_message", chat_json);
       message.value = "";
     });
 
-    // this.handleChat(socket);
-
-    // Pull in environment variables
-    let username = "James";
-    let users = [];
-
     // use append() to add messages to chat history
-    socket.on("chat_message", (msg) => {
+    this.socket.on("chat_message", (msg) => {
       // if message from self
       if (msg.username === username) {
         let newLi = document.createElement("li");
@@ -50,27 +44,13 @@ export default class Chat extends React.Component {
     });
 
     // send username at startup
-    socket.emit("connection", username);
+    this.socket.emit("connection");
+    this.socket.emit("username", username);
   }
 
   componentWillUnmount() {
-    document.querySelector("#chatForm").removeEventListener("submit", (e) => {
-      e.preventDefault();
-      let time = Date.now();
-      let chat_json = {
-        username: username,
-        timestamp: time,
-        msg: document.getElementById("txt").value,
-        room_num: 1,
-      };
-      socket.emit("chat_message", chat_json);
-      document.getElementById("txt").value = "";
-    });
+    this.socket.close();
   }
-
-  // handleChat(socket) {
-
-  // }
 
   render() {
     return (
