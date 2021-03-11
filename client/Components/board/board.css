@@ -1,0 +1,42 @@
+.column-container {
+    display: flex;
+    border-right-color: black;
+    width: 100%;
+    border-right:black;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  
+.column {
+  border:solid;
+  width: 250px;
+  min-width: 250px;
+  height: 80vh;
+  padding: 1%;
+  margin: 1%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: whitesmoke;
+  float: left;
+}
+
+.column input[type=text]{
+  border-style: none;
+  font-size: 15px;
+  font-weight: bold;
+  float: center;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  outline: none;
+  background-color: whitesmoke;
+  display: block;
+}
+
+#addcol{
+  background-color: whitesmoke;
+  border-style: none;
+  content: "\002B";
+  font-size: 72px;
+  margin: 0%;
+}
+
