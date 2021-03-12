@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --config webpack.common.js --watch",
-    "start": "electron ."
+    "start": "electron .",
+    "server": "nodemon ./remote/server"
   },
   "keywords": [],
   "author": "",
