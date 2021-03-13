@@ -30,18 +30,7 @@
       {
         "and":
         [
-          {
-            "match":
-            {
-              "type": "payload-hash-sha1",
-              "secret": "adsFgGdf1T23423",
-              "parameter":
-              {
-                "source": "header",
-                "name": "X-Hub-Signature"
-              }
-            }
-          },
+
           {
             "match":
             {
