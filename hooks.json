@@ -30,19 +30,6 @@
       {
         "and":
         [
-
-          {
-            "match":
-            {
-              "type": "value",
-              "value": "refs/heads/server",
-              "parameter":
-              {
-                "source": "payload",
-                "name": "ref"
-              }
-            }
-          }
         ]
       }
     }
