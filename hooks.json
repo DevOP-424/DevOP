@@ -10,38 +10,6 @@
           "name": "Access-Control-Allow-Origin",
           "value": "*"
         }
-      ],
-      "pass-arguments-to-command":
-      [],
-      "trigger-rule":
-      {
-        "and":
-        [
-          {
-            "match":
-            {
-              "type": "payload-hmac-sha1",
-              "secret": "adsFgGdf1T23423",
-              "parameter":
-              {
-                "source": "header",
-                "name": "X-Hub-Signature"
-              }
-            }
-          },
-          {
-            "match":
-            {
-              "type": "value",
-              "value": "refs/heads/server",
-              "parameter":
-              {
-                "source": "payload",
-                "name": "ref"
-              }
-            }
-          }
-        ]
-      }
+      ]
     }
-  ]
+]
