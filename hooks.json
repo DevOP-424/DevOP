@@ -1,7 +1,7 @@
 [
     {
       "id": "webhook",
-      "execute-command": "C:/Users/James/Documents/GitHub/DevOP/update-nodejs.sh",
+      "execute-command": "C:/Users/James/Documents/GitHub/DevOP/update-node-script.bat",
       "command-working-directory": "C:/Users/James/Documents/GitHub/DevOP",
       "response-message": "I got the payload!",
       "response-headers":
