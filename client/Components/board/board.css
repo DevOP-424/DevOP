@@ -10,7 +10,9 @@
   
 .column {
   border:solid;
-  width: 250px;
+  /*Scroll for extra tasks*/
+  
+  width: 255px;
   min-width: 250px;
   height: 80vh;
   padding: 1%;
@@ -22,7 +24,7 @@
   
 }
 
-.column input[type=text]{
+.tasktitle{/*column input[type=text]*/
   border-style: none;
   font-size: 15px;
   font-weight: bold;

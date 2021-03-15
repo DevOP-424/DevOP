@@ -17,6 +17,7 @@
     "mysql": "^2.18.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-draggable": "^4.4.3",
     "react-load-script": "0.0.6",
     "socket.io": "^3.1.2"
   },
