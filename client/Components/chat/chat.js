@@ -5,7 +5,7 @@ import "./chat.css";
 export default class Chat extends React.Component {
   componentDidMount() {
     this.socket = io.connect("http://68.114.104.121:22446");
-    const username = "james";
+    const username = "chris";
 
     const message = document.querySelector("#txt");
     document.querySelector("#chatForm").addEventListener("submit", (e) => {

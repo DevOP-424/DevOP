@@ -1,6 +1,6 @@
 console.log("outside");
 import React from "react";
-
+import Task from "../TaskForm/task"
 import './board.css';
 
 
@@ -25,12 +25,13 @@ export default class Board extends React.Component{
     
     return(
       <>
-      <div class="column-container">
+      <Task />
+      {/* <div class="column-container">
       <div class="column" id="col1"><input type="text" placeholder="TODO"></input></div>
       <div class="column" id="col2"><input type="text" placeholder="In Progress"></input></div>
       <div class="column" id="col3"><input type="text" placeholder="Done"></input></div>
       </div>
-      <button id = 'addcol' onClick = {this.if_add.bind(this)}><span >&#43;</span></button>
+      <button id = 'addcol' onClick = {this.if_add.bind(this)}><span >&#43;</span></button> */}
       </>
     );
   }  
