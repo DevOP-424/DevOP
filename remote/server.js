@@ -1,3 +1,6 @@
+// Load environmental variables
+require("dotenv").config();
+
 // Required packages
 const express = require('express');
 
@@ -14,11 +17,11 @@ const mysql = require('mysql');
 
 // Configure DB connection pool
 const pool = mysql.createPool({
-    host     : '68.114.104.121',    // enter IP of DB here
-    port     : '30000',             // specify port
-    user     : 'server',            // DB username
-    password : 'SMTTT424',          // DB password
-    database : 'sys'                // target schema
+  host: process.env.DB_HOST, // enter IP of DB here
+  port: process.env.DB_PORT, // specify port
+  user: process.env.DB_USER, // DB username
+  password: process.env.DB_PASS, // DB password
+  database: process.env.DB_TABLE // target schema
 });
 
 // Configure socket and events
