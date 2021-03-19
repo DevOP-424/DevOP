@@ -7,8 +7,8 @@ export default class Settings extends React.Component {
     this.state = {
       userName: "",
       password: "",
-      dbWeb: "",
-      dbPort: "",
+      serverWeb: "",
+      serverPort: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,14 +20,13 @@ export default class Settings extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("Contact your Admin to set your account");
     event.preventDefault();
   }
 
   render() {
     return (
       <>
-        <form id="settingContainer" onClick={this.handleSubmit}>
+        <form id="settingContainer" onSubmit={this.handleSubmit}>
           <label id="settingsForm">
             Name:
             <input

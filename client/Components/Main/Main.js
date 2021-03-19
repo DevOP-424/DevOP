@@ -7,12 +7,11 @@ import { NavLink, Switch, Route } from "react-router-dom";
 import "./main.css";
 
 class Main extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: "React",
     };
-    this.motion = this.motion.bind(this);
   }
 
   motion(e) {

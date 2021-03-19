@@ -1,10 +1,14 @@
 import React from "react";
+import { socket } from "../../socketHelper";
 import Settings from "../settings/settings";
 import "./chat.css";
 
 export default class Chat extends React.Component {
+  constructor() {
+    super();
+  }
+
   componentDidMount() {
-    this.socket = io.connect("http://68.114.104.121:22446");
     const username = "chris";
 
     const message = document.querySelector("#txt");
@@ -17,12 +21,12 @@ export default class Chat extends React.Component {
         msg: message.value,
         room_num: 1,
       };
-      this.socket.emit("chat_message", chat_json);
+      socket.emit("chat_message", chat_json);
       message.value = "";
     });
 
     // use append() to add messages to chat history
-    this.socket.on("chat_message", (msg) => {
+    socket.on("chat_message", (msg) => {
       // if message from self
       if (msg.username === username) {
         let newLi = document.createElement("li");
@@ -44,12 +48,8 @@ export default class Chat extends React.Component {
     });
 
     // send username at startup
-    this.socket.emit("connection");
-    this.socket.emit("username", username);
-  }
-
-  componentWillUnmount() {
-    this.socket.close();
+    socket.emit("connection");
+    socket.emit("username", username);
   }
 
   render() {
