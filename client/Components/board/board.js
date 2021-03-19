@@ -1,24 +1,22 @@
 import React from "react";
-import Task from "../TaskForm/task";
-import { socket } from "../../socketHelper";
+import socketIOClient from "socket.io-client";
 import "./board.css";
 
 export default class Board extends React.Component {
   componentDidMount() {
-    // this.socket = io.connect("http://localhost:22446");
+    this.socket = socketIOClient("http://localhost:22446");
 
-    socket.emit("task_pull");
+    this.socket.emit("task_pull");
 
-    // this.socket.on("task_record", (record) => {
-    socket.on("task_record", (record) => {
+    this.socket.on("task_record", (record) => {
       this.if_add_task(record);
       console.log(record);
     });
   }
 
-  // componentWillUnmount() {
-  //   this.socket.close();
-  // }
+  componentWillUnmount() {
+    this.socket.close();
+  }
 
   if_add() {
     if (document.querySelector("#addcol")) {

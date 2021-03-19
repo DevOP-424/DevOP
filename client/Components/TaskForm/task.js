@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { socket } from "../../socketHelper";
 import "./task.css";
 
 class Task extends React.Component {
