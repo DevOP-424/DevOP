@@ -1,25 +1,29 @@
-import React from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import socketIOClient from "socket.io-client";
-
+import { SettingsContext } from "../../SettingsContext";
 import "../board/board.css";
 
-export default class teamBoard extends React.Component {
-  componentDidMount() {
-    this.socket = socketIOClient("http://localhost:22446");
+export default function teamBoard() {
+  const [settings, setSetting] = useContext(SettingsContext);
+  const socketRef = useRef();
 
-    this.socket.emit("task_pull");
+  useEffect(() => {
+    socketRef.current = socketIOClient(
+      "http://" + settings.url + ":" + settings.port
+    );
 
-    this.socket.on("task_record", (record) => {
-      this.if_add_task(record);
-      console.log(record);
+    socketRef.current.emit("task_pull");
+
+    socketRef.current.on("task_record", (record) => {
+      addTask(record);
     });
-  }
 
-  componentWillUnmount() {
-    this.socket.close();
-  }
+    return () => {
+      socketRef.current.disconnect();
+    };
+  });
 
-  if_add() {
+  const addColumn = () => {
     if (document.querySelector("#addcol")) {
       document.querySelector("#addcol").addEventListener("click", () => {
         let col = document.createElement("div");
@@ -31,9 +35,9 @@ export default class teamBoard extends React.Component {
         document.querySelector(".column-container").append(col);
       });
     }
-  }
+  };
 
-  if_add_task(record) {
+  const addTask = (record) => {
     let div = document.createElement("div");
 
     div.setAttribute("class", "taskcard");
@@ -48,26 +52,24 @@ export default class teamBoard extends React.Component {
       "></input></label>";
 
     document.querySelector(".column").append(div);
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <div class="column-container">
-          <div class="column" id="col1">
-            <input type="text" placeholder="TODO"></input>
-          </div>
-          <div class="column" id="col2">
-            <input type="text" placeholder="In Progress"></input>
-          </div>
-          <div class="column" id="col3">
-            <input type="text" placeholder="Done"></input>
-          </div>
+  return (
+    <>
+      <div class="column-container">
+        <div class="column" id="col1">
+          <input type="text" placeholder="TODO"></input>
         </div>
-        <button id="addcol" onClick={this.if_add.bind(this)}>
-          <span>&#43;</span>
-        </button>
-      </>
-    );
-  }
+        <div class="column" id="col2">
+          <input type="text" placeholder="In Progress"></input>
+        </div>
+        <div class="column" id="col3">
+          <input type="text" placeholder="Done"></input>
+        </div>
+      </div>
+      <button id="addcol" onClick={addColumn}>
+        <span>&#43;</span>
+      </button>
+    </>
+  );
 }

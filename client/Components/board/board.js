@@ -1,72 +1,78 @@
-import React from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
+import { SettingsContext } from "../../SettingsContext";
+import Task from "../TaskForm/task";
 import "./board.css";
 
-export default class Board extends React.Component {
-  componentDidMount() {
-    this.socket = socketIOClient("http://localhost:22446");
+export default function Board() {
+  const [settings, setSettings] = useContext(SettingsContext);
+  const socketRef = useRef();
 
-    this.socket.emit("task_pull");
+  // useEffect(() => {
+  //   socketRef.current = socketIOClient(
+  //     "http://" + settings.url + ":" + settings.port
+  //   );
 
-    this.socket.on("task_record", (record) => {
-      this.if_add_task(record);
-      console.log(record);
-    });
-  }
+  //   socketRef.current.emit("task_pull");
 
-  componentWillUnmount() {
-    this.socket.close();
-  }
+  //   socketRef.current.on("task_record", (record) => {
+  //     addTask(record);
+  //   });
 
-  if_add() {
-    if (document.querySelector("#addcol")) {
-      document.querySelector("#addcol").addEventListener("click", () => {
-        let col = document.createElement("div");
-        col.setAttribute("class", "column");
-        let txt = document.createElement("input");
-        txt.setAttribute("type", "text");
-        txt.setAttribute("placeholder", "....");
-        col.append(txt);
-        document.querySelector(".column-container").append(col);
-      });
-    }
-  }
+  //   // close connection
+  //   return () => {
+  //     socketRef.current.disconnect();
+  //   };
+  // });
 
-  if_add_task(record) {
-    let div = document.createElement("div");
+  // const addColumn = () => {
+  //   if (document.querySelector("#addcol")) {
+  //     document.querySelector("#addcol").addEventListener("click", () => {
+  //       let col = document.createElement("div");
+  //       col.setAttribute("class", "column");
+  //       let txt = document.createElement("input");
+  //       txt.setAttribute("type", "text");
+  //       txt.setAttribute("placeholder", "....");
+  //       col.append(txt);
+  //       document.querySelector(".column-container").append(col);
+  //     });
+  //   }
+  // };
 
-    div.setAttribute("class", "taskcard");
-    div.setAttribute("draggable", "true");
-    div.innerHTML =
-      "<label className='cardnametitle'>Name " +
-      "<input type='text' className='cardfirstlastname' value=" +
-      record.task_name +
-      "}></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>" +
-      "Task   <input type='text' className='cardassigntask' value=TASK00000" +
-      record.task_id +
-      "></input></label>";
+  // const addTask = (record) => {
+  //   let div = document.createElement("div");
 
-    document.querySelector(".column").append(div);
-  }
+  //   div.setAttribute("class", "taskcard");
+  //   div.setAttribute("draggable", "true");
+  //   div.innerHTML =
+  //     "<label className='cardnametitle'>Name " +
+  //     "<input type='text' className='cardfirstlastname' value=" +
+  //     record.task_name +
+  //     "}></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>" +
+  //     "Task   <input type='text' className='cardassigntask' value=TASK00000" +
+  //     record.task_id +
+  //     "></input></label>";
 
-  render() {
-    return (
-      <>
-        <div class="column-container">
-          <div class="column" id="col1">
-            <input type="text" placeholder="TODO"></input>
-          </div>
-          <div class="column" id="col2">
-            <input type="text" placeholder="In Progress"></input>
-          </div>
-          <div class="column" id="col3">
-            <input type="text" placeholder="Done"></input>
-          </div>
+  //   document.querySelector(".column").append(div);
+  // };
+
+  return (
+    <>
+      <Task />
+      {/* <div class="column-container">
+        <div class="column" id="col1">
+          <input type="text" placeholder="TODO"></input>
         </div>
-        <button id="addcol" onClick={this.if_add.bind(this)}>
-          <span>&#43;</span>
-        </button>
-      </>
-    );
-  }
+        <div class="column" id="col2">
+          <input type="text" placeholder="In Progress"></input>
+        </div>
+        <div class="column" id="col3">
+          <input type="text" placeholder="Done"></input>
+        </div>
+      </div>
+      <button id="addcol" onClick={addColumn}>
+        <span>&#43;</span>
+      </button> */}
+    </>
+  );
 }

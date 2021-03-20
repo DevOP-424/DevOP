@@ -26,7 +26,6 @@ const pool = mysql.createPool({
 
 // Configure socket and events
 io.sockets.on("connection", (socket) => {
-  console.log("connected probably from Main");
   socket.on("username", (username) => {
     io.emit("is_online", username);
     pullChatHistory(socket);
@@ -74,11 +73,13 @@ function pullChatHistory(socket) {
 // Insert new chat message into DB
 function pushChatMessage(message) {
   // prepare query
-  let sql = `INSERT INTO chat SET
-                username = ${mysql.escape(message.username)},
-                timestamp = ${mysql.escape(message.timestamp)},
-                msg = ${mysql.escape(message.msg)},
-                room_num = ${mysql.escape(message.room_num)}`;
+  let sql = `INSERT INTO message SET
+                sender_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
+                  message.username
+                )}),
+                text = ${mysql.escape(message.msg)},
+                room_name = ${mysql.escape("alfas")}`;
+  // created_at = ${mysql.escape(message.timestamp)},
 
   // run query
   pool.query(sql, (err) => {

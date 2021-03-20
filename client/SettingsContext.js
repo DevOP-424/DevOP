@@ -4,10 +4,10 @@ export const SettingsContext = createContext();
 
 export const SettingsProvider = (props) => {
   const [settings, setSettings] = useState({
-    username: "",
-    password: "",
-    url: "",
-    port: "",
+    username: "james",
+    password: "default",
+    url: "localhost",
+    port: "22446",
   });
   return (
     <SettingsContext.Provider value={[settings, setSettings]}>
