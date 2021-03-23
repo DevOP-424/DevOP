@@ -14,17 +14,19 @@ body{
 /* Style the header */
 .header {
   grid-area: header;
-  background-color: white;
+  background-color: #fdad4a;
+  color: #12908e;
+  font-family:Arial, Helvetica, sans-serif;
   padding: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-style: solid;
+  border-style: none;
   border-width: 2px;
-  background-color: whitesmoke;
   
   
 }
 .header input[type=text] {
   background-color: white;
+  border-radius: 5px;
   border: none;
   outline: none;
   font-size: 17px;
@@ -41,6 +43,8 @@ body{
     'left main-content main-content main-content main-content main-content main-content main-content main-content main-content';
   grid-column-gap: 10px; 
   height: auto;
+  
+  
 
 } 
 
@@ -53,9 +57,10 @@ body{
 .NavBar {
   grid-area: left;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-style: solid;
+  border-style: none;
   border-width: 2px;
-  background-color: whitesmoke;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: #fdad4a;
   min-width: 12vw;
   max-width: 12vw;
   }
@@ -63,11 +68,11 @@ body{
 /* Style the main-content class */
 .main-content {
   grid-area: main-content;
-  
+  background-color: #fbc999;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-style: solid;
+  border-style: none;
   border-width: 2px;
-  background-color: whitesmoke;
+  
   text-align: left;
   display: flex;
   
@@ -80,8 +85,9 @@ body{
 }
 
 .accordion {
-  background-color: whitesmoke;
-  color: #444;
+  background-color: #fdad4a;
+  
+  color: #12908e;
   cursor: pointer;
   padding: 10px;
   width: 100%;
@@ -116,7 +122,8 @@ body{
 
 .panel {
   padding: 0 10px;
-  background-color: whitesmoke;
+  background-color: #fbc999;
+  color: #12908e;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
