@@ -13,7 +13,7 @@ export default class card extends React.Component {
    render() {
        return(
         <>
-        <Draggable>
+        
             <div className="taskcard">
                 <label className="cardnametitle">
                     Name <input type="text" className="cardfirstlastname" ></input>
@@ -25,7 +25,7 @@ export default class card extends React.Component {
                 </label>
             
             </div>
-        </Draggable>
+        
         
         </>
        );

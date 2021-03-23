@@ -13,6 +13,7 @@ import card from "../board/card";
 export default class Board extends React.Component{
 
   constructor(){
+    super ();
     this.if_add_task  = this.if_add_task.bind(this);
   }
 
@@ -47,8 +48,9 @@ export default class Board extends React.Component{
 
       if_add_task(){
         if(document.querySelector('#addtask')){
+          
            
-            let draggable = document.createElement('Draggable');
+            
 
             let div = document.createElement('div');
             div.setAttribute('class', 'taskcard');
@@ -56,8 +58,8 @@ export default class Board extends React.Component{
             "<input type='text' className='cardfirstlastname' ></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>"+
                 "Task   <input type='text' className='cardassigntask'></input></label>";
             
-            draggable.append(div);
-            document.querySelector(".column").append(draggable);
+            
+            document.querySelector(".column").append(div);
     
           
     
