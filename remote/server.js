@@ -26,7 +26,8 @@ const pool = mysql.createPool({
 
 // Configure socket and events
 io.sockets.on("connection", (socket) => {
-  socket.on("username", () => {
+  socket.on("username", (username) => {
+    io.emit("is_online", username);
     pullChatHistory(socket);
   });
 
@@ -35,40 +36,13 @@ io.sockets.on("connection", (socket) => {
     io.emit("chat_message", message);
   });
 
-  // COLUMNS EVENTS
-  socket.on("column_pull", () => {
-    pullColumnNames(socket);
-  });
-
-  socket.on("column_insert", (record) => {
-    insertColumnRecord(record);
-    io.emit("column_record", record);
-  });
-
-  socket.on("column_update", (record) => {
-    updateColumnRecord(record);
-  });
-
-  socket.on("column_delete", (record) => {
-    deleteColumnRecord(record);
-  });
-
-  // TASK EVENTS
-  socket.on("task_pull", () => {
-    pullTaskHistory(socket);
-  });
-
   socket.on("task_insert", (record) => {
-    insertTaskRecord(record);
+    pushTaskRecord(record);
     io.emit("task_record", record);
   });
 
-  socket.on("task_update", (record) => {
-    updateTaskRecord(record);
-  });
-
-  socket.on("task_delete", (record) => {
-    deleteTaskRecord(record);
+  socket.on("task_pull", () => {
+    pullTaskHistory(socket);
   });
 });
 
@@ -136,7 +110,7 @@ function pullTaskHistory(socket) {
 }
 
 // Insert new task record into DB
-function insertTaskRecord(record) {
+function pushTaskRecord(record) {
   // prepare query
   let sql = `INSERT INTO task SET
               task_name = ${mysql.escape(record.TaskName)},
@@ -157,99 +131,16 @@ function insertTaskRecord(record) {
   });
 }
 
-// Function to update individual task record
-function updateTaskRecord(record) {
+// Insert new task record into DB
+function pushTaskRecord(record) {
   // prepare query
-  let sql = `UPDATE task SET
+  let sql = `INSERT INTO task SET
               task_name = ${mysql.escape(record.TaskName)},
               task_number = ${mysql.escape(record.TaskNum)},
-              user_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
-                record.AssignedTo
-              )}),
+              user_id = ${mysql.escape(record.AssignedTo)},
               description = ${mysql.escape(record.TaskDescription)},
               date_start = ${mysql.escape(record.StartDate)},
-              date_end = ${mysql.escape(record.EndDate)}
-              WHERE
-              task_id = ${mysql.escape(record.task_id)}`;
-
-  // run query
-  pool.query(sql, (err) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    }
-  });
-}
-
-// Delete individual task record
-function deleteTaskRecord(record) {
-  // prep query
-  let sql = `DELETE FROM task WHERE task_id = ${mysql.escape(record.task_id)}`;
-
-  // run query
-  pool.query(sql, (err) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    }
-  });
-}
-
-// Pull columns names
-function pullColumnNames(socket) {
-  // prep query
-  let sql = "SELECT * FROM columns";
-
-  // run query
-  pool.query(sql, (err, res) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    } else {
-      // emit each message one JSON at a time
-      res.forEach((row) => {
-        socket.emit("column_record", row);
-      });
-    }
-  });
-}
-
-// Insert new task record into DB
-function insertColumnRecord(record) {
-  // prepare query
-  let sql = `INSERT INTO columns SET
-              column_name = ${mysql.escape(record.column_name)}`;
-
-  // run query
-  pool.query(sql, (err) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    }
-  });
-}
-
-// Function to update individual task record
-function updateColumnRecord(record) {
-  // prepare query
-  let sql = `UPDATE columns SET
-              column_name = ${mysql.escape(record.column_name)}`;
-
-  // run query
-  pool.query(sql, (err) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    }
-  });
-}
-
-// Delete individual task record
-function deleteColumnRecord(record) {
-  // prep query
-  let sql = `DELETE FROM columns WHERE column_id = ${mysql.escape(
-    record.column_id
-  )}`;
+              date_end = ${mysql.escape(record.EndDate)}`;
 
   // run query
   pool.query(sql, (err) => {
