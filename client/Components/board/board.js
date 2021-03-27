@@ -14,6 +14,12 @@ export default function Board() {
       "http://" + settings.url + ":" + settings.port
     );
 
+    socketRef.current.emit("column_pull");
+
+    socketRef.current.on("column_record", (record) => {
+      addColumn(record);
+    });
+
     socketRef.current.emit("task_pull");
 
     socketRef.current.on("task_record", (record) => {
@@ -26,79 +32,47 @@ export default function Board() {
     };
   });
 
-  const addColumn = () => {
-    if (document.querySelector("#addcol")) {
-      document.querySelector("#addcol").addEventListener("click", () => {
-        let col = document.createElement("div");
-        col.setAttribute("class", "column");
-        let txt = document.createElement("input");
-        txt.setAttribute("type", "text");
-        txt.setAttribute("placeholder", "....");
-        col.append(txt);
-        document.querySelector(".column-container").append(col);
-      });
-    }
+  const addColumn = (record) => {
+    let col = document.createElement("div");
+    col.setAttribute("class", "column");
+    col.setAttribute("id", "col" + record.column_id);
+    let txt = document.createElement("input");
+    txt.setAttribute("type", "text");
+    txt.setAttribute("placeholder", record.column_name);
+    col.append(txt);
+    let btn = document.createElement("button");
+    btn.setAttribute("class", "addtask");
+    btn.setAttribute("id", "addtask");
+    btn.setAttribute("onClick", "{addTask}");
+    btn.textContent = "Add Task";
+    col.append(btn);
+    document.querySelector(".column-container").append(col);
   };
 
   const addTask = (record) => {
-    let div = document.createElement("div");
+    let col_id = "#col" + record.column_id;
+    if (document.querySelector(col_id)) {
+      let col_id = "#col" + record.column_id;
+      let div = document.createElement("div");
 
-    div.setAttribute("class", "taskcard");
-    div.setAttribute("draggable", "true");
-    div.innerHTML =
-      "<label className='cardnametitle'>Name " +
-      "<input type='text' className='cardfirstlastname' value=" +
-      record.task_name +
-      "}></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>" +
-      "Task   <input type='text' className='cardassigntask' value=TASK00000" +
-      record.task_id +
-      "></input></label>";
+      div.setAttribute("class", "taskcard");
+      div.setAttribute("draggable", "true");
+      div.innerHTML =
+        "<label className='cardnametitle'>Name " +
+        "<input type='text' className='cardfirstlastname' value=" +
+        record.task_name +
+        "}></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>" +
+        "Task   <input type='text' className='cardassigntask' value=TASK00000" +
+        record.task_id +
+        "></input></label>";
 
-    document.querySelector(".column").append(div);
+      document.querySelector(col_id).append(div);
+    }
   };
 
   return (
     <>
-      <div class="column-container">
-        <div class="column" id="col1">
-          <input type="text" class="tasktitle" placeholder="TODO"></input>
-          <button id="addtask" class="addtask" onClick={addTask}>
-            {" "}
-            Add Task <i class="fa fa-plus"></i>
-          </button>
-          <Card />
-          {/* <div class="taskcard">
-            <input type="text" class="firstlastname" placeholder="Name"></input>
-            <input type="text" class="assigntask" placeholder="Task"></input>
-        </div> */}
-        </div>
-        <div class="column" id="col2">
-          <input
-            type="text"
-            class="tasktitle"
-            placeholder="In Progress"
-          ></input>
-          <button id="addtask" class="addtask" onClick={addTask}>
-            Add Task <i class="fa fa-plus"></i>
-          </button>
-          {/*<Card />*/}
-          {/* <div class="taskcard">
-            <input type="text" class="firstlastname" placeholder="Name"></input>
-            <input type="text" class="assigntask" placeholder="Task"></input>
-        </div> */}
-        </div>
-        <div class="column" id="col3">
-          <input type="text" class="tasktitle" placeholder="Done"></input>
-          <button id="addtask" class="addtask" onClick={addTask}>
-            Add Task <i class="fa fa-plus"></i>
-          </button>
-          {/*<Card/>*/}
-          {/* <div class="taskcard">
-            <input type="text" class="firstlastname" placeholder="Name"></input>
-            <input type="text" class="assigntask" placeholder="Task"></input>
-        </div> */}
-        </div>
-      </div>
+      <div class="column-container"></div>
       <button id="addcol" onClick={addColumn}>
         <span>&#43;</span>
       </button>

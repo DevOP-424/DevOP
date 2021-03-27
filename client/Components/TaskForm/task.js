@@ -7,6 +7,7 @@ import "./task.css";
 export default function Task() {
   const [settings, setSettings] = useContext(SettingsContext);
   const socketRef = useRef();
+
   const [TaskName, setTaskName] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
   const [AssignedTo, setAssignedTo] = useState("");
