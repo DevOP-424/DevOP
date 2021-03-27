@@ -130,3 +130,23 @@ function pushTaskRecord(record) {
     }
   });
 }
+
+// Insert new task record into DB
+function pushTaskRecord(record) {
+  // prepare query
+  let sql = `INSERT INTO task SET
+              task_name = ${mysql.escape(record.TaskName)},
+              task_number = ${mysql.escape(record.TaskNum)},
+              user_id = ${mysql.escape(record.AssignedTo)},
+              description = ${mysql.escape(record.TaskDescription)},
+              date_start = ${mysql.escape(record.StartDate)},
+              date_end = ${mysql.escape(record.EndDate)}`;
+
+  // run query
+  pool.query(sql, (err) => {
+    if (err) {
+      // handle error
+      console.error("Error with query: " + err.stack);
+    }
+  });
+}
