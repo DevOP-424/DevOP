@@ -1,3 +1,6 @@
+// Load environmental variables
+require("dotenv").config();
+
 // Required packages
 const express = require("express");
 
@@ -14,11 +17,11 @@ const mysql = require("mysql");
 
 // Configure DB connection pool
 const pool = mysql.createPool({
-  host: "68.114.104.121", // enter IP of DB here
-  port: "30000", // specify port
-  user: "server", // DB username
-  password: "SMTTT424", // DB password
-  database: "sys", // target schema
+  host: process.env.DB_HOST, // enter IP of DB here
+  port: process.env.DB_PORT, // specify port
+  user: process.env.DB_USER, // DB username
+  password: process.env.DB_PASS, // DB password
+  database: process.env.DB_TABLE, // target schema
 });
 
 // Configure socket and events
@@ -32,6 +35,15 @@ io.sockets.on("connection", (socket) => {
     pushChatMessage(message);
     io.emit("chat_message", message);
   });
+
+  socket.on("task_insert", (record) => {
+    pushTaskRecord(record);
+    io.emit("task_record", record);
+  });
+
+  socket.on("task_pull", () => {
+    pullTaskHistory(socket);
+  });
 });
 
 // Configure listen port for socket connections
@@ -42,7 +54,7 @@ const server = http.listen(22446, () => {
 // Pull full chat history on initial connection to chatroom
 function pullChatHistory(socket) {
   // prepare query
-  const sql = "SELECT * FROM chat ORDER BY timestamp";
+  const sql = "SELECT * FROM message ORDER BY created_at";
 
   // run query
   pool.query(sql, (err, res) => {
@@ -61,11 +73,54 @@ function pullChatHistory(socket) {
 // Insert new chat message into DB
 function pushChatMessage(message) {
   // prepare query
-  let sql = `INSERT INTO chat SET
-                username = ${mysql.escape(message.username)},
-                timestamp = ${mysql.escape(message.timestamp)},
-                msg = ${mysql.escape(message.msg)},
-                room_num = ${mysql.escape(message.room_num)}`;
+  let sql = `INSERT INTO message SET
+                sender_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
+                  message.username
+                )}),
+                text = ${mysql.escape(message.msg)},
+                room_name = ${mysql.escape("alfas")}`;
+  // created_at = ${mysql.escape(message.timestamp)},
+
+  // run query
+  pool.query(sql, (err) => {
+    if (err) {
+      // handle error
+      console.error("Error with query: " + err.stack);
+    }
+  });
+}
+
+// Pull full task history on initial connection to chatroom
+function pullTaskHistory(socket) {
+  // prepare query
+  const sql = "SELECT * FROM task";
+
+  // run query
+  pool.query(sql, (err, res) => {
+    if (err) {
+      // handle error
+      console.error("Error with query: " + err.stack);
+    } else {
+      // emit each message one JSON at a time
+      res.forEach((row) => {
+        socket.emit("task_record", row);
+      });
+    }
+  });
+}
+
+// Insert new task record into DB
+function pushTaskRecord(record) {
+  // prepare query
+  let sql = `INSERT INTO task SET
+              task_name = ${mysql.escape(record.TaskName)},
+              task_number = ${mysql.escape(record.TaskNum)},
+              user_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
+                record.AssignedTo
+              )}),
+              description = ${mysql.escape(record.TaskDescription)},
+              date_start = ${mysql.escape(record.StartDate)},
+              date_end = ${mysql.escape(record.EndDate)}`;
 
   // run query
   pool.query(sql, (err) => {

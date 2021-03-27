@@ -1,79 +1,103 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { SettingsContext } from "../../SettingsContext";
 import "./settings.css";
 
-export default class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: "",
-      password: "",
-      dbWeb: "",
-      dbPort: "",
-    };
+// Do not delete or move this line or the page will refresh endlessly
+let settingsUpdate = false;
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+export default function Settings() {
+  const [settings, setSettings] = useContext(SettingsContext);
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [url, setUrl] = useState("");
+  const [port, setPort] = useState("");
 
-  handleSubmit(event) {
-    alert("Contact your Admin to set your account");
-    event.preventDefault();
-  }
+  useEffect(() => {
+    if (settingsUpdate) {
+      fetch("http://localhost:3000/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(settings),
+      });
+      settingsUpdate = false;
+    }
+  });
 
-  render() {
-    return (
-      <>
-        <form id="settingContainer" onClick={this.handleSubmit}>
-          <label id="settingsForm">
-            Name:
-            <input
-              name="userName"
-              type="text"
-              value={this.state.userName}
-              onChange={this.handleChange}
-            />
-          </label>
-          <br></br>
+  const updateUsername = (e) => {
+    setUsername(e.target.value);
+  };
+  const updatePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const updateUrl = (e) => {
+    setUrl(e.target.value);
+  };
+  const updatePort = (e) => {
+    setPort(e.target.value);
+  };
 
-          <label id="settingsForm">
-            Password:
-            <input
-              name="password"
-              type="text"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </label>
-          <br></br>
+  const saveSettings = (e) => {
+    e.preventDefault();
+    setSettings({
+      username: username,
+      password: password,
+      url: url,
+      port: port,
+    });
+    settingsUpdate = true;
+  };
 
-          <label id="settingsForm">
-            Database URL:
-            <input
-              name="dbWeb"
-              type="text"
-              value={this.state.dbWeb}
-              onChange={this.handleChange}
-            />
-          </label>
-          <br></br>
-
-          <label id="settingsForm">
-            Database Port:
-            <input
-              name="dbPort"
-              type="text"
-              value={this.state.dbPort}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input id="submitButton" type="submit" value="Submit" />
-        </form>
+  return (
+    <>
+      <form id="settingContainer" onSubmit={saveSettings}>
+        <label id="settingsForm">
+          Username:
+          <input
+            name="username"
+            type="text"
+            placeholder={settings.username}
+            onChange={updateUsername}
+          />
+        </label>
         <br></br>
-      </>
-    );
-  }
+
+        <label id="settingsForm">
+          Password:
+          <input
+            name="password"
+            type="text"
+            placeholder={settings.password}
+            onChange={updatePassword}
+          />
+        </label>
+        <br></br>
+
+        <label id="settingsForm">
+          Server URL:
+          <input
+            name="dbWeb"
+            type="text"
+            placeholder={settings.url}
+            onChange={updateUrl}
+          />
+        </label>
+        <br></br>
+
+        <label id="settingsForm">
+          Server Port:
+          <input
+            name="dbPort"
+            type="text"
+            placeholder={settings.port}
+            onChange={updatePort}
+          />
+        </label>
+        <input id="submitButton" type="submit" value="Submit" />
+      </form>
+      <br></br>
+    </>
+  );
 }
