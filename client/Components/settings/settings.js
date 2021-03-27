@@ -1,6 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { SettingsContext } from "../../SettingsContext";
 import "./settings.css";
+
+// Do not delete or move this line or the page will refresh endlessly
+let settingsUpdate = false;
 
 export default function Settings() {
   const [settings, setSettings] = useContext(SettingsContext);
@@ -9,6 +12,19 @@ export default function Settings() {
   const [password, setPassword] = useState("");
   const [url, setUrl] = useState("");
   const [port, setPort] = useState("");
+
+  useEffect(() => {
+    if (settingsUpdate) {
+      fetch("http://localhost:3000/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(settings),
+      });
+      settingsUpdate = false;
+    }
+  });
 
   const updateUsername = (e) => {
     setUsername(e.target.value);
@@ -31,6 +47,7 @@ export default function Settings() {
       url: url,
       port: port,
     });
+    settingsUpdate = true;
   };
 
   return (

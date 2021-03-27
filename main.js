@@ -1,5 +1,36 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const fs = require("fs");
+
+// Requirements for local server to handle saving/loading
+const express = require("express");
+const exp = express();
+exp.use(express.json());
+const http = require("http").Server(exp);
+
+// Configure listen port for socket connections
+const server = http.listen(3000, () => {
+  console.log("listening on *:3000");
+});
+
+// Get endpoint to pass settings to client
+exp.get("/get", (req, res) => {
+  console.log("GET");
+  res.json(JSON.parse(fs.readFileSync("settings.json")));
+});
+
+// Post endpoint to receive settings from client
+exp.post("/post", (req, res) => {
+  console.log("POST");
+  let data = {
+    username: req.body.username,
+    password: req.body.password,
+    url: req.body.url,
+    port: req.body.port,
+  };
+  fs.writeFileSync("settings.json", JSON.stringify(data));
+  res = res.json();
+});
 
 function createWindow() {
   const win = new BrowserWindow({

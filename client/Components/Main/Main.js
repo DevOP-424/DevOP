@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Board from "../board/board";
 import Chat from "../chat/chat";
 import Settings from "../settings/settings";
 import Teams from "../teamView/team";
 import { NavLink, Switch, Route } from "react-router-dom";
+import { SettingsContext } from "../../SettingsContext";
+
 import "./main.css";
 
 export default function Main() {
+  const [settings, setSettings] = useContext(SettingsContext);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/get")
+      .then((response) => response.json())
+      .then((data) => setSettings(data));
+  }, []);
+
   const motion = (e) => {
     e.preventDefault();
     // Accordion animation on navbar
@@ -24,7 +34,8 @@ export default function Main() {
       <div class="grid-container">
         <div class="header">
           <h3>
-            Search<input type="text" placeholder="..."></input>
+            Search
+            <input id="searchbar" type="text" placeholder="..."></input>
           </h3>
         </div>
         <div class="NavBar">
