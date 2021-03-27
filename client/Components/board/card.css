@@ -1,0 +1,40 @@
+.taskcard {
+  border: solid;
+  width: 235px;
+  min-width: 235px;
+  height: 20vh;
+  padding: 1%;
+  margin: 1%;
+  float: center;
+  background-color: beige;
+  border-radius: 5px;
+  /*draggable css*/
+  cursor: move;
+}
+
+.cardnametitle,
+.cardtasktitle {
+  float: left;
+  display: flex;
+  justify-content: space-between;
+  padding: 1%;
+}
+
+.cardassigntask {
+  float: left;
+  text-align: left;
+  padding: 1%;
+  margin: 1%;
+  width: 187px;
+  min-width: 187px;
+  height: auto;
+}
+
+.cardfirstlastname {
+  float: left;
+  text-align: left;
+  padding: 1%;
+  margin: 1%;
+  width: 180px;
+  min-width: 180px;
+}
