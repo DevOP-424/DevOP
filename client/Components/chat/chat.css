@@ -28,8 +28,9 @@
   }
   
   .chat-container > form button {
-    width: 30%; 
-    background: rgb(130, 224, 255);
+    width: 30%;
+    font-weight: bold;
+    background: #b7e4c7;
     height: 100%;
     padding: 0px;
     border: none;

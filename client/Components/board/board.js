@@ -2,7 +2,7 @@ console.log("outside");
 import React from "react";
 
 import './board.css';
-import Draggable from 'react-draggable';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Card from '../board/card';
 //
 import card from "../board/card";
@@ -75,7 +75,7 @@ export default class Board extends React.Component{
       <div class='column-container'>
       <div class='column' id='col1'>
         <input type='text' class='tasktitle' placeholder='TODO'></input>
-        <button id='addtask' class='addtask'onClick={this.if_add_task}> Add Task <i class='fa fa-plus'></i></button>
+        {/*<button id='addtask' class='addtask'onClick={this.if_add_task}> Add Task <i class='fa fa-plus'></i></button>*/}
         <Card/>
         {/* <div class="taskcard">
             <input type="text" class="firstlastname" placeholder="Name"></input>
@@ -84,7 +84,7 @@ export default class Board extends React.Component{
       </div>
       <div class='column' id='col2'>
         <input type='text' class='tasktitle' placeholder='In Progress'></input>
-        <button id='addtask'class='addtask' > Add Task <i class='fa fa-plus'></i></button>
+        {/*<button id='addtask'class='addtask' > Add Task <i class='fa fa-plus'></i></button>*/}
         {/*<Card />*/}
         {/* <div class="taskcard">
             <input type="text" class="firstlastname" placeholder="Name"></input>
@@ -93,7 +93,7 @@ export default class Board extends React.Component{
       </div>
       <div class='column' id='col3'>
         <input type='text' class='tasktitle'  placeholder='Done'></input>
-        <button id='addtask' class='addtask' > Add Task <i class='fa fa-plus'></i></button>
+        {/*<button id='addtask' class='addtask' > Add Task <i class='fa fa-plus'></i></button>*/}
         {/*<Card/>*/}
         {/* <div class="taskcard">
             <input type="text" class="firstlastname" placeholder="Name"></input>
