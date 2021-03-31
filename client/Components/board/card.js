@@ -12,6 +12,11 @@ export default class card extends React.Component {
           <label className="cardnametitle">
             Name <input type="text" className="cardfirstlastname"></input>
           </label>
+          <br />
+          <label className="startEnd">
+            Start <input type="text" className="startInput"></input>
+            End <input type="text" className="endInput"></input>
+          </label>
 
           <br />
           <label className="cardtasktitle">

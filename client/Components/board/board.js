@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { SettingsContext } from "../../SettingsContext";
-import Card from "../board/card";
-import Task from "../TaskForm/task";
 import "./board.css";
 
 export default function Board() {
@@ -35,17 +33,21 @@ export default function Board() {
   const addColumn = (record) => {
     let col = document.createElement("div");
     col.setAttribute("class", "column");
-    col.setAttribute("id", "col" + record.column_id);
+    let col_id = "col" + record.column_id;
+    col.setAttribute("id", col_id);
+    let form = document.createElement("form");
+    form.setAttribute("class", "columnNameForm");
+    form.setAttribute("id", "form-" + col_id);
     let txt = document.createElement("input");
+    txt.setAttribute("class", "columnNameInput");
     txt.setAttribute("type", "text");
     txt.setAttribute("placeholder", record.column_name);
-    col.append(txt);
-    let btn = document.createElement("button");
-    btn.setAttribute("class", "addtask");
-    btn.setAttribute("id", "addtask");
-    btn.setAttribute("onClick", "{addTask}");
-    btn.textContent = "Add Task";
-    col.append(btn);
+    let subBtn = document.createElement("button");
+    subBtn.setAttribute("class", "hideme");
+    subBtn.textContent = "Save";
+    form.append(txt);
+    form.append(subBtn);
+    col.append(form);
     document.querySelector(".column-container").append(col);
   };
 
@@ -58,16 +60,32 @@ export default function Board() {
       div.setAttribute("class", "taskcard");
       div.setAttribute("draggable", "true");
       div.innerHTML =
-        "<label className='cardnametitle'>Name " +
-        "<input type='text' className='cardfirstlastname' value=" +
+        "<h2>" +
         record.task_name +
-        "}></input></label><br/><label className='cardtasktitle'onClick={this.if_add_task}>" +
-        "Task   <input type='text' className='cardassigntask' value=TASK00000" +
+        "</h2><h4>" +
+        record.description +
+        "</h4><h5>TASK00000" +
         record.task_id +
-        "></input></label>";
+        "</h5>";
 
       document.querySelector(col_id).append(div);
     }
+  };
+
+  const updateColumnName = (e) => {
+    console.log(e);
+    e.preventDefault();
+    let colParent = document.querySelector(".column").closest(".near.ancestor");
+    console.log(colParent);
+    colParent = colParent.id.slice(3, 4);
+    console.log(colParent);
+    colRecord = {
+      column_id: colParent,
+      column_name: e.target.value,
+    };
+    console.log(colRecord);
+    socketRef.current.emit("column_update", colRecord);
+    console.log(socketRef.current);
   };
 
   return (

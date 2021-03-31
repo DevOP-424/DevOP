@@ -3,9 +3,9 @@ import Board from "../board/board";
 import Chat from "../chat/chat";
 import Settings from "../settings/settings";
 import Teams from "../teamView/team";
+import Task from "../TaskForm/task";
 import { NavLink, Switch, Route } from "react-router-dom";
 import { SettingsContext } from "../../SettingsContext";
-
 import "./main.css";
 
 export default function Main() {
@@ -45,6 +45,10 @@ export default function Main() {
           <div class="panel">
             <NavLink id="link" to="/board">
               My Taskboard
+              <br />
+            </NavLink>
+            <NavLink id="link" to="/task">
+              Add Task
             </NavLink>
           </div>
           <button class="accordion" onClick={motion}>
@@ -76,6 +80,9 @@ export default function Main() {
           <Switch>
             <Route path="/board" Component={Board}>
               <Board />
+            </Route>
+            <Route path="/task" Component={Task}>
+              <Task />
             </Route>
             <Route path="/chat" Component={Chat}>
               <Chat />

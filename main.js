@@ -15,13 +15,11 @@ const server = http.listen(3000, () => {
 
 // Get endpoint to pass settings to client
 exp.get("/get", (req, res) => {
-  console.log("GET");
   res.json(JSON.parse(fs.readFileSync("settings.json")));
 });
 
 // Post endpoint to receive settings from client
 exp.post("/post", (req, res) => {
-  console.log("POST");
   let data = {
     username: req.body.username,
     password: req.body.password,
@@ -37,6 +35,7 @@ function createWindow() {
     show: false,
     minWidth: 1000,
     minHeight: 1000,
+    title: "DevOP",
   });
   win.maximize();
   win.show();

@@ -80,7 +80,8 @@ const server = http.listen(22446, () => {
 // Pull full chat history on initial connection to chatroom
 function pullChatHistory(socket) {
   // prepare query
-  const sql = "SELECT * FROM message ORDER BY created_at";
+  const sql =
+    "SELECT * FROM message JOIN user ON message.sender_id=user.user_id ORDER BY created_at;";
 
   // run query
   pool.query(sql, (err, res) => {
@@ -98,14 +99,14 @@ function pullChatHistory(socket) {
 
 // Insert new chat message into DB
 function pushChatMessage(message) {
+  console.log(message);
   // prepare query
   let sql = `INSERT INTO message SET
                 sender_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
-                  message.username
+                  message.user_name
                 )}),
-                text = ${mysql.escape(message.msg)},
+                text = ${mysql.escape(message.text)},
                 room_name = ${mysql.escape("alfas")}`;
-  // created_at = ${mysql.escape(message.timestamp)},
 
   // run query
   pool.query(sql, (err) => {

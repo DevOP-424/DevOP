@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { SettingsContext } from "../../SettingsContext";
-import { withRouter } from "react-router";
 import "./task.css";
 
 export default function Task() {
@@ -51,15 +50,29 @@ export default function Task() {
       StartDate: StartDate,
       EndDate: EndDate,
     };
-    console.log(taskState);
     socketRef.current.emit("task_insert", taskState);
-    // this.props.history.push("/client/board/board");
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    let deleteConfirm = confirm("Are you sure you want to DELETE this record?");
+    if (deleteConfirm) {
+      let taskState = {
+        TaskNum: "",
+        TaskName: TaskName,
+        TaskDescription: TaskDescription,
+        AssignedTo: AssignedTo,
+        StartDate: StartDate,
+        EndDate: EndDate,
+      };
+      socketRef.current.emit("task_delete", taskState);
+    }
   };
 
   return (
     <>
       <form>
-        <label id="taskFrom">
+        <label id="taskForm">
           TaskName:
           <input
             name="TaskName"
@@ -70,7 +83,7 @@ export default function Task() {
         </label>
         <br></br>
 
-        <label id="taskFrom">
+        <label id="taskForm">
           Assigned To:
           <input
             name="AssignedTo"
@@ -81,7 +94,7 @@ export default function Task() {
         </label>
         <br></br>
 
-        <label id="taskFrom">
+        <label id="taskForm">
           Start Date:
           <input
             name="StartDate"
@@ -92,7 +105,7 @@ export default function Task() {
         </label>
         <br></br>
 
-        <label id="taskFrom">
+        <label id="taskForm">
           End Date:
           <input
             name="EndDate"
@@ -103,7 +116,7 @@ export default function Task() {
         </label>
         <br></br>
 
-        <label id="taskFrom">
+        <label id="taskForm">
           Task Description:
           <textarea
             name="TaskDescription"
@@ -112,6 +125,12 @@ export default function Task() {
             onChange={updateTaskDescription}
           />
         </label>
+        <input
+          id="delete"
+          type="submit"
+          value="Delete"
+          onClick={handleDelete}
+        />
         <input
           id="submit"
           type="submit"
