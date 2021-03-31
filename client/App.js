@@ -1,17 +1,16 @@
 import React from "react";
-import Main from './Components/Main/Main.js';
-import { HashRouter } from 'react-router-dom';
+import Main from "../client/Components/Main/Main";
+import { HashRouter } from "react-router-dom";
+import { SettingsProvider } from "./SettingsContext";
 
-class App extends React.Component {
-  render() {
-    return (
+export default function App() {
+  return (
+    <SettingsProvider>
       <HashRouter>
         <div className="App">
           <Main />
         </div>
       </HashRouter>
-    );
-  }
+    </SettingsProvider>
+  );
 }
-
-export default App;

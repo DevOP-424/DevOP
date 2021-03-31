@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Board from "../board/board";
 import Chat from "../chat/chat";
 import Settings from "../settings/settings";
 import Teams from "../teamView/team";
+import Task from "../TaskForm/task";
 import { NavLink, Switch, Route } from "react-router-dom";
+import { SettingsContext } from "../../SettingsContext";
 import "./main.css";
 
-class Main extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: "React",
-    };
-    this.motion = this.motion.bind(this);
-  }
+export default function Main() {
+  const [settings, setSettings] = useContext(SettingsContext);
 
-  motion(e) {
+  useEffect(() => {
+    fetch("http://localhost:3000/get")
+      .then((response) => response.json())
+      .then((data) => setSettings(data));
+  }, []);
+
+  const motion = (e) => {
     e.preventDefault();
     // Accordion animation on navbar
     e.target.classList.toggle("active");
@@ -25,71 +27,75 @@ class Main extends React.Component {
     } else {
       panel.style.maxHeight = panel.scrollHeight + "px";
     }
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <div class="grid-container">
-          <div class="header">
-            <h3>
-              Search<input type="text" placeholder="...."></input>
-            </h3>
+  return (
+    <>
+      <div class="grid-container">
+        <div class="header">
+          <h3>
+            Search
+            <input id="searchbar" type="text" placeholder="..."></input>
+          </h3>
+        </div>
+        <div class="NavBar">
+          <button class="accordion" onClick={motion}>
+            Taskboard
+          </button>
+          <div class="panel">
+            <NavLink id="link" to="/board">
+              My Taskboard
+              <br />
+            </NavLink>
+            <NavLink id="link" to="/task">
+              Add Task
+            </NavLink>
           </div>
-          <div class="NavBar">
-            <button class="accordion" onClick={this.motion}>
-              Taskboard
-            </button>
-            <div class="panel">
-              <NavLink id="link" to="/board">
-                My Taskboard
-              </NavLink>
-            </div>
-            <button class="accordion" onClick={this.motion}>
-              Team
-            </button>
-            <div class="panel">
-              <NavLink id="link" to="/team">
-                DevOP
-              </NavLink>
-            </div>
-            <button class="accordion" onClick={this.motion}>
-              Chats
-            </button>
-            <div class="panel">
-              <NavLink id="link" to="/chat">
-                People
-              </NavLink>
-            </div>
-            <button class="accordion" onClick={this.motion}>
+          <button class="accordion" onClick={motion}>
+            Team
+          </button>
+          <div class="panel">
+            <NavLink id="link" to="/team">
+              DevOP
+            </NavLink>
+          </div>
+          <button class="accordion" onClick={motion}>
+            Chats
+          </button>
+          <div class="panel">
+            <NavLink id="link" to="/chat">
+              People
+            </NavLink>
+          </div>
+          <button class="accordion" onClick={motion}>
+            Settings
+          </button>
+          <div class="panel">
+            <NavLink id="link" to="/settings">
               Settings
-            </button>
-            <div class="panel">
-              <NavLink id="link" to="/settings">
-                Settings
-              </NavLink>
-            </div>
-          </div>
-          <div className="main-content">
-            <Switch>
-              <Route path="/board" Component={Board}>
-                <Board />
-              </Route>
-              <Route path="/chat" Component={Chat}>
-                <Chat />
-              </Route>
-              <Route path="/team" Component={Teams}>
-                <Teams />
-              </Route>
-              <Route path="/settings" Component={Settings}>
-                <Settings />
-              </Route>
-            </Switch>
+            </NavLink>
           </div>
         </div>
-      </>
-    );
-  }
+        <div className="main-content">
+          <Switch>
+            <Route path="/board" Component={Board}>
+              <Board />
+            </Route>
+            <Route path="/task" Component={Task}>
+              <Task />
+            </Route>
+            <Route path="/chat" Component={Chat}>
+              <Chat />
+            </Route>
+            <Route path="/team" Component={Teams}>
+              <Teams />
+            </Route>
+            <Route path="/settings" Component={Settings}>
+              <Settings />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </>
+  );
 }
-
-export default Main;

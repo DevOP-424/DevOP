@@ -11,6 +11,12 @@
 # production
 /build
 
+# server
+hooks.json
+socketxp.exe
+update-node-script.bat
+webhook.exe
+
 # misc
 .DS_Store
 .env

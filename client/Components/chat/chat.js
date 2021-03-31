@@ -1,39 +1,30 @@
-import React from "react";
-import Settings from "../settings/settings";
+import React, { useContext, useEffect, useRef } from "react";
+import { SettingsContext } from "../../SettingsContext";
+import socketIOClient from "socket.io-client";
 import "./chat.css";
 
-export default class Chat extends React.Component {
-  componentDidMount() {
-    this.socket = io.connect("http://68.114.104.121:22446");
-    const username = "james";
+export default function Chat() {
+  const [settings, setSettings] = useContext(SettingsContext);
+  const socketRef = useRef();
 
-    const message = document.querySelector("#txt");
-    document.querySelector("#chatForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      let time = Date.now();
-      let chat_json = {
-        username: username,
-        timestamp: time,
-        msg: message.value,
-        room_num: 1,
-      };
-      this.socket.emit("chat_message", chat_json);
-      message.value = "";
-    });
+  useEffect(() => {
+    socketRef.current = socketIOClient(
+      "http://" + settings.url + ":" + settings.port
+    );
 
-    // use append() to add messages to chat history
-    this.socket.on("chat_message", (msg) => {
+    //use append() to add messages to chat history
+    socketRef.current.on("chat_message", (msg) => {
       // if message from self
-      if (msg.username === username) {
+      if (msg.user_name === settings.username) {
         let newLi = document.createElement("li");
         newLi.classList.add("msg-self");
-        newLi.textContent = msg.msg + " :" + msg.username;
+        newLi.textContent = msg.text + " :" + msg.first_name;
         document.querySelector("#messages").append(newLi);
       } else {
         // otherwise message is from someone else
         let newLi = document.createElement("li");
         newLi.classList.add("msg-other");
-        newLi.textContent = msg.username + ": " + msg.msg;
+        newLi.textContent = msg.first_name + ": " + msg.text;
         document.querySelector("#messages").append(newLi);
       }
 
@@ -44,31 +35,42 @@ export default class Chat extends React.Component {
     });
 
     // send username at startup
-    this.socket.emit("connection");
-    this.socket.emit("username", username);
-  }
+    socketRef.current.emit("username", settings.username);
 
-  componentWillUnmount() {
-    this.socket.close();
-  }
+    // close connection
+    return () => {
+      socketRef.current.disconnect();
+    };
+  });
 
-  render() {
-    return (
-      <>
-        <div class="chat-container">
-          <ul id="messages"></ul>
-          <form id="chatForm">
-            <input
-              id="txt"
-              type="text"
-              autoComplete="off"
-              autoFocus="on"
-              placeholder="Enter message..."
-            />
-            <button id="button">Send</button>
-          </form>
-        </div>
-      </>
-    );
-  }
+  const submitChat = (e) => {
+    e.preventDefault();
+    if (document.querySelector("#txt").value) {
+      let chat_json = {
+        user_name: settings.username,
+        text: document.querySelector("#txt").value,
+      };
+      console.log(chat_json);
+      socketRef.current.emit("chat_message", chat_json);
+      document.querySelector("#txt").value = "";
+    }
+  };
+
+  return (
+    <>
+      <div class="chat-container">
+        <ul id="messages"></ul>
+        <form id="chatForm" onSubmit={submitChat}>
+          <input
+            id="txt"
+            type="text"
+            autoComplete="off"
+            autoFocus="on"
+            placeholder="Enter message..."
+          />
+          <button id="button">Send</button>
+        </form>
+      </div>
+    </>
+  );
 }
