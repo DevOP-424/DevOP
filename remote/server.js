@@ -2,18 +2,18 @@
 require("dotenv").config();
 
 // Required packages
-const express = require("express");
+const express = require('express');
 
 // Set express and configure middleware
 const exp = express();
 exp.use(express.json());
 
 // Create http server, depedent on express server
-const http = require("http").Server(exp);
+const http = require('http').Server(exp);
 
 // Create socket, dependent on http server
-const io = require("socket.io")(http);
-const mysql = require("mysql");
+const io = require('socket.io')(http);
+const mysql = require('mysql');
 
 // Configure DB connection pool
 const pool = mysql.createPool({
@@ -74,7 +74,7 @@ io.sockets.on("connection", (socket) => {
 
 // Configure listen port for socket connections
 const server = http.listen(22446, () => {
-  console.log("listening on *:22446");
+    console.log('listening on *:22446');
 });
 
 // Pull full chat history on initial connection to chatroom
@@ -83,23 +83,22 @@ function pullChatHistory(socket) {
   const sql =
     "SELECT * FROM message JOIN user ON message.sender_id=user.user_id ORDER BY created_at;";
 
-  // run query
-  pool.query(sql, (err, res) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    } else {
-      // emit each message one JSON at a time
-      res.forEach((row) => {
-        socket.emit("chat_message", row);
-      });
-    }
-  });
+    // run query
+    pool.query(sql, (err, res) => {
+        if (err) {
+            // handle error
+            console.error('Error with query: ' + err.stack);
+        } else {
+            // emit each message one JSON at a time
+            res.forEach((row) => {
+                socket.emit('chat_message', row);
+            });
+        }
+    });
 }
 
 // Insert new chat message into DB
 function pushChatMessage(message) {
-  console.log(message);
   // prepare query
   let sql = `INSERT INTO message SET
                 sender_id = (SELECT user_id FROM user WHERE user_name = ${mysql.escape(
@@ -252,11 +251,11 @@ function deleteColumnRecord(record) {
     record.column_id
   )}`;
 
-  // run query
-  pool.query(sql, (err) => {
-    if (err) {
-      // handle error
-      console.error("Error with query: " + err.stack);
-    }
-  });
+    // run query
+    pool.query(sql, (err) => {
+        if (err) {
+            // handle error
+            console.error('Error with query: ' + err.stack);
+        }
+    });    
 }

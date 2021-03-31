@@ -1,20 +1,32 @@
-prior to development install the follwoing packages
+Prior to development, install the following packages:
 
-npm install --save-dev react-router-dom @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader style-loader sass-loader sass webpack webpack-cli electron-reloader
+    npm install --save-dev react-router-dom @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader style-loader sass-loader sass webpack webpack-cli electron-reloader
 
-npm i electron express mysql socket.io
+    npm i electron express mysql socket.io dotenv
 
-to begin development and see your code realtime do the following:
-    first run in one terminal: npm run watch
-    then launch the application in a new Terminal using: npm start
+Environmental variables are stored in the root directory in a file called ".env". This file is not shared in the repo and must be created locally and uses the following format: (no commas, quotes, parenthesis, or other special characters are necessary)
 
-to make a new component(new feature for example: board, chat, team and all subfeatures such as the cards that will be on a lane) create a new .js file.
+    DB_HOST=1.1.1.1
+    DB_PORT=1000
+    DB_USER=username
+    DB_PASS=password
+    DB_TABLE=table
 
-in said js file make a new class for the component using the folwoing syntax.
+To begin development and see your code realtime do the following:
+
+    First run in one terminal: 
+        npm run watch
+    Then launch the application in a new Terminal using:
+        npm start
+
+To create a new component (new feature for example: board, chat, team and all subfeatures such as the cards that will be on a lane) create a new .js file.
+
+In said .js file, make a new class for the component using the folwoing syntax.
+
     export default class {class_Name} extends React.Component{
         render(){
             return();
         }
     }
 
-you then have to import the file in the "Parent" (board is imported into main) and call the class in the parent code.
+You then have to import the file in the "Parent" (board is imported into main), and call the class in the parent code.
