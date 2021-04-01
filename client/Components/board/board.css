@@ -15,6 +15,7 @@
   background-color: #b7e4c7;
   float: left;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .columnNameInput {
@@ -67,8 +68,8 @@
 }
 
 .taskcard {
-  width: 238px;
-  min-width: 238px;
+  width: 95%;
+  min-width: 95%;
   height: 20vh;
   padding: 1%;
   margin: 1%;

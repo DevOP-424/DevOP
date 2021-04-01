@@ -1,5 +1,5 @@
 import React from "react";
-import TeamBoard from "../teamView/teamBoard";
+import Board from "../board/board";
 import Chat from "../chat/chat";
 import "./team.css";
 
@@ -28,7 +28,7 @@ export default function Teams() {
   return (
     <>
       <div class="box">
-        <TeamBoard />
+        <Board />
       </div>
       <div
         class="handler"

@@ -45,9 +45,9 @@ export default function Main() {
           <div class="panel">
             <NavLink id="link" to="/board">
               My Taskboard
-              <br />
             </NavLink>
             <NavLink id="link" to="/task">
+              <br />
               Add Task
             </NavLink>
           </div>
