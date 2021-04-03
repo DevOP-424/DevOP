@@ -4,7 +4,7 @@ import { SettingsContext } from "../../SettingsContext";
 import Card from "./card";
 import "./board.css";
 
-export default function Column(column) {
+export default function Column(fromBoard) {
   const [settings, setSettings] = useContext(SettingsContext);
   const [cardsArray, setCardsArray] = useState([]);
   const socketRef = useRef();
@@ -17,7 +17,7 @@ export default function Column(column) {
     socketRef.current.emit("task_pull");
 
     socketRef.current.on("task_record", (record) => {
-      if (record.column_id === column.column.column_id) {
+      if (record.column_id === fromBoard.column.column_id) {
         setCardsArray((cardsArray) => [...cardsArray, record]);
       }
     });
@@ -29,8 +29,7 @@ export default function Column(column) {
   }, []);
 
   const updateColumnName = (e) => {
-    console.log(e);
-    e.preventDefault();
+    console.log("We made it!");
     let colParent = document.querySelector(".column").closest(".near.ancestor");
     console.log(colParent);
     colParent = colParent.id.slice(3, 4);
@@ -44,23 +43,21 @@ export default function Column(column) {
     console.log(socketRef.current);
   };
 
-  let columnId = "col" + column.column.column_id;
+  let columnId = "col" + fromBoard.column.column_id;
   let formId = "form-" + columnId;
   return (
     <div class="column" id={columnId}>
-      <form class="columnNameForm" id={formId}>
+      <form class="columnNameForm" id={formId} onSubmit={updateColumnName}>
         <input
           class="columnNameInput"
           type="text"
-          placeholder={column.column.column_name}
+          placeholder={fromBoard.column.column_name}
         ></input>
-        <button class="hideme" onClick={updateColumnName}>
-          Save
-        </button>
+        <input class="hideme" type="submit"></input>
       </form>
-      {cardsArray.map((card) => (
-        <Card key={card.task_id} card={card} />
-      ))}
+      {cardsArray
+        ? cardsArray.map((card) => <Card key={card.task_id} card={card} />)
+        : "Loading..."}
     </div>
   );
 }

@@ -27,16 +27,14 @@ export default function Board() {
   }, []);
 
   const addColumn = (e) => {
+    e.preventDefault();
+    console.log("inside addColumn");
     const newCol = {
       column_id: columnsArray.length + 1,
       column_name: "New Column",
     };
     setColumnsArray((columnsArray) => [...columnsArray, newCol]);
-    socketRef.current = socketIOClient(
-      "http://" + settings.url + ":" + settings.port
-    );
     socketRef.current.emit("column_insert", newCol);
-    socketRef.current.disconnect();
   };
 
   return (
