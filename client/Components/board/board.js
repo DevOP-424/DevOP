@@ -1,50 +1,54 @@
-console.log("outside");
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import socketIOClient from "socket.io-client";
+import { SettingsContext } from "../../SettingsContext";
+import Column from "./column";
+import "./board.css";
 
-import './board.css';
+export default function Board() {
+  const [settings, setSettings] = useContext(SettingsContext);
+  const [columnsArray, setColumnsArray] = useState([]);
+  const socketRef = useRef();
 
-
-export default class Board extends React.Component{
-  
-  if_add(){
-          if(document.querySelector('#addcol')){
-            document.querySelector('#addcol').addEventListener('click', () => {
-            let col = document.createElement('div');
-            col.setAttribute('class', 'column');
-            let txt = document.createElement('input')
-            txt.setAttribute('type' , 'text');
-            txt.setAttribute('placeholder' , '....');
-            col.append(txt);
-            document.querySelector(".column-container").append(col);
-          });
-        }
-      }
-
-  render(){
-    console.log("inside");
-    
-    return(
-      <>
-      <div class="column-container">
-      <div class="column" id="col1"><input type="text" placeholder="TODO"></input></div>
-      <div class="column" id="col2"><input type="text" placeholder="In Progress"></input></div>
-      <div class="column" id="col3"><input type="text" placeholder="Done"></input></div>
-      </div>
-      <button id = 'addcol' onClick = {this.if_add.bind(this)}><span >&#43;</span></button>
-      </>
+  useEffect(() => {
+    socketRef.current = socketIOClient(
+      "http://" + settings.url + ":" + settings.port
     );
-  }  
+
+    socketRef.current.emit("column_pull");
+
+    socketRef.current.on("column_record", (record) => {
+      setColumnsArray((columnsArray) => [...columnsArray, record]);
+    });
+
+    // close connection
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
+  const addColumn = (e) => {
+    e.preventDefault();
+    console.log("inside addColumn");
+    const newCol = {
+      column_id: columnsArray.length + 1,
+      column_name: "New Column",
+    };
+    setColumnsArray((columnsArray) => [...columnsArray, newCol]);
+    socketRef.current.emit("column_insert", newCol);
+  };
+
+  return (
+    <>
+      <div class="column-container">
+        {columnsArray
+          ? columnsArray.map((column) => (
+              <Column key={column.id} column={column} />
+            ))
+          : "Loading..."}
+      </div>
+      <button id="addcol" onClick={addColumn}>
+        <span>&#43;</span>
+      </button>
+    </>
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
