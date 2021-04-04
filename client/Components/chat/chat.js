@@ -18,13 +18,13 @@ export default function Chat() {
       if (msg.user_name === settings.username) {
         let newLi = document.createElement("li");
         newLi.classList.add("msg-self");
-        newLi.textContent = msg.text + " :" + msg.first_name;
+        newLi.textContent = msg.text + " :" + msg.user_name;
         document.querySelector("#messages").append(newLi);
       } else {
         // otherwise message is from someone else
         let newLi = document.createElement("li");
         newLi.classList.add("msg-other");
-        newLi.textContent = msg.first_name + ": " + msg.text;
+        newLi.textContent = msg.user_name + ": " + msg.text;
         document.querySelector("#messages").append(newLi);
       }
 
