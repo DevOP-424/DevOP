@@ -37,12 +37,31 @@ export default function Board() {
     socketRef.current.emit("column_insert", newCol);
   };
 
+  const updateColumnName = (e) => {
+    console.log("We made it!");
+    let colParent = document.querySelector(".column").closest(".near.ancestor");
+    console.log(colParent);
+    colParent = colParent.id.slice(3, 4);
+    console.log(colParent);
+    colRecord = {
+      column_id: colParent,
+      column_name: e.target.value,
+    };
+    console.log(colRecord);
+    socketRef.current.emit("column_update", colRecord);
+    console.log(socketRef.current);
+  };
+
   return (
     <>
       <div class="column-container">
         {columnsArray
           ? columnsArray.map((column) => (
-              <Column key={column.id} column={column} />
+              <Column
+                key={column.column_id}
+                column={column}
+                updateColumn={updateColumnName}
+              />
             ))
           : "Loading..."}
       </div>

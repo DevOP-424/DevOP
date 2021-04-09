@@ -28,26 +28,15 @@ export default function Column(fromBoard) {
     };
   }, []);
 
-  const updateColumnName = (e) => {
-    console.log("We made it!");
-    let colParent = document.querySelector(".column").closest(".near.ancestor");
-    console.log(colParent);
-    colParent = colParent.id.slice(3, 4);
-    console.log(colParent);
-    colRecord = {
-      column_id: colParent,
-      column_name: e.target.value,
-    };
-    console.log(colRecord);
-    socketRef.current.emit("column_update", colRecord);
-    console.log(socketRef.current);
-  };
-
   let columnId = "col" + fromBoard.column.column_id;
   let formId = "form-" + columnId;
   return (
     <div class="column" id={columnId}>
-      <form class="columnNameForm" id={formId} onSubmit={updateColumnName}>
+      <form
+        class="columnNameForm"
+        id={formId}
+        onSubmit={fromBoard.updateColumn}
+      >
         <input
           class="columnNameInput"
           type="text"
